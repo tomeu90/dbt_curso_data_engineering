@@ -20,7 +20,7 @@ sources:
       - name: addresses
         loaded_at_field: _fivetran_synced
         columns:
-          - name: address_id
+          - name: address_id                 
           - name: zipcode
           - name: country
           - name: address
