@@ -3,6 +3,8 @@ version: 2
 sources:
 
   - name: sql_server_dbo # name of the source 
+    description: >
+      Raw data from Database.
     schema: sql_server_dbo # this is the schema our raw data lives in
     database: ALUMNO27_DEV_BRONZE_DB # this is the name of our database
 
@@ -19,87 +21,184 @@ sources:
 
       - name: addresses
         loaded_at_field: _fivetran_synced
+        description: >
+          Data about addresses in database.
         columns:
-          - name: address_id                 
+          - name: address_id
+            description: >
+              UUID for each unique address on platform.
+            data_type: varchar
+            tests:
+              - unique
+              - not_null              
           - name: zipcode
+            description: >
+              Zipcode for each unique address on platform.
+            data_type: number
+            tests:
+              - not_null              
           - name: country
+            description: >
+              Country for each unique address on platform.
+            data_type: varchar
+            tests:
+              - not_null 
           - name: address
+            description: >
+              Addresses registered on platform.
+            data_type: varchar
+            tests:
+              - not_null
+              - unique
           - name: state
+            description: >
+              State for each unique address on platform.
+            data_type: varchar
+            tests:
+              - not_null 
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
+            data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: events
         loaded_at_field: _fivetran_synced
         columns:
           - name: event_id
+            data_type: varchar
+            tests:
+              - unique
+              - not_null 
           - name: page_url
+            data_type: varchar
+            tests:
+              - not_null
           - name: event_type
+            data_type: varchar
           - name: user_id
+            data_type: varchar
+            tests:
+              - not_null              
+              - relationships:
+                  to: source('sql_server_dbo','users')
+                  field: user_id
           - name: product_id
+            data_type: varchar
           - name: session_id
+            data_type: varchar
           - name: created_at
+            data_type: timestamp_ntz
           - name: order_id
+            data_type: varchar
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
 
       - name: orders
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            data_type: varchar
           - name: shipping_service
+            data_type: varchar
           - name: shipping_cost
+            data_type: float
           - name: address_id
+            data_type: varchar
           - name: created_at
+            data_type: timestamp_tz
           - name: promo_id
+            data_type: varchar
           - name: estimated_delivery_at
+            data_type: timestamp_tz
           - name: order_cost
+            data_type: float
           - name: user_id
+            data_type: varchar
           - name: order_total
+            data_type: float
           - name: delivered_at
+            data_type: timestamp_tz
           - name: tracking_id
+            data_type: varchar
           - name: status
+            data_type: varchar
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
 
       - name: order_items
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            data_type: varchar
           - name: product_id
+            data_type: varchar
           - name: quantity
+            data_type: number
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
 
       - name: products
         loaded_at_field: _fivetran_synced
         columns:
           - name: product_id
+            data_type: varchar
           - name: price
+            data_type: float
           - name: name
+            data_type: varchar
           - name: inventory
+            data_type: number
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
 
       - name: promos
         loaded_at_field: _fivetran_synced
         columns:
           - name: promo_id
+            data_type: varchar
           - name: discount
+            data_type: number
           - name: status
+            data_type: varchar
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
 
       - name: users
         loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
+            data_type: varchar
           - name: updated_at
+            data_type: timestamp_tz
           - name: address_id
+            data_type: varchar
           - name: last_name
+            data_type: varchar
           - name: created_at
+            data_type: timestamp_tz
           - name: phone_number
+            data_type: varchar
           - name: total_orders
+            data_type: number
           - name: first_name
+            data_type: varchar
           - name: email
+            data_type: varchar
           - name: _fivetran_deleted
+            data_type: boolean
           - name: _fivetran_synced
+            data_type: timestamp_tz
