@@ -69,6 +69,8 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: event_id
+            description: >
+              UUID for each unique event on platform.
             data_type: varchar
             tests:
               - unique
@@ -78,8 +80,16 @@ sources:
             tests:
               - not_null
           - name: event_type
+            description: >
+              Event type on platform.
             data_type: varchar
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['checkout', 'package_shipped', 'add_to_cart', 'page_view']                  
           - name: user_id
+            description: >
+              UUID for each user that caused an event on platform.
             data_type: varchar
             tests:
               - not_null              
@@ -87,17 +97,41 @@ sources:
                   to: source('sql_server_dbo','users')
                   field: user_id
           - name: product_id
+            description: >
+              UUID for each product involved in an event on platform.
             data_type: varchar
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','products')
+                  field: product_id
           - name: session_id
+            description: >
+              UUID for each session on platform.
             data_type: varchar
+            tests:
+              - not_null
           - name: created_at
+            description: >
+              Timestamp of when the event on platform was created.
             data_type: timestamp_ntz
+            tests:
+              - not_null
           - name: order_id
+            description: >
+              UUID for each order involved in an event on platform.
             data_type: varchar
+            tests:
+              - relationships:
+                  to: source('sql_server_dbo','orders')
+                  field: order_id
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: orders
         loaded_at_field: _fivetran_synced
@@ -131,7 +165,11 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: order_items
         loaded_at_field: _fivetran_synced
@@ -145,7 +183,11 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: products
         loaded_at_field: _fivetran_synced
@@ -161,7 +203,11 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: promos
         loaded_at_field: _fivetran_synced
@@ -175,7 +221,11 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 
 
       - name: users
         loaded_at_field: _fivetran_synced
@@ -201,4 +251,8 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
             data_type: timestamp_tz
+            tests:
+              - not_null 

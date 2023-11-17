@@ -16,7 +16,8 @@ stg_addresses AS (
         , country
         , address
         , state
-        , _fivetran_synced AS date_load
+        , DATE(_fivetran_synced) AS date_load
+        , TIME(_fivetran_synced) AS time_load
     FROM src_sql_addresses
     )
 

@@ -11,10 +11,12 @@ WITH src_sql_promos AS (
 
 stg_promos AS (
     SELECT
-          promo_id
+          {{ dbt_utils.generate_surrogate_key(['promo_id', 'discount', 'status', '_fivetran_synced']) }} AS promo_id
+        , promo_id AS promo_name
         , discount
         , status
-        , _fivetran_synced AS date_load
+        , DATE(_fivetran_synced) AS date_load
+        , TIME(_fivetran_synced) AS time_load
     FROM src_sql_promos
     )
 
