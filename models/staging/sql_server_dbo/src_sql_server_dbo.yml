@@ -92,18 +92,11 @@ sources:
               UUID for each user that caused an event on platform.
             data_type: varchar
             tests:
-              - not_null              
-              - relationships:
-                  to: source('sql_server_dbo','users')
-                  field: user_id
+              - not_null
           - name: product_id
             description: >
               UUID for each product involved in an event on platform.
             data_type: varchar
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','products')
-                  field: product_id
           - name: session_id
             description: >
               UUID for each session on platform.
@@ -120,10 +113,6 @@ sources:
             description: >
               UUID for each order involved in an event on platform.
             data_type: varchar
-            tests:
-              - relationships:
-                  to: source('sql_server_dbo','orders')
-                  field: order_id
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced

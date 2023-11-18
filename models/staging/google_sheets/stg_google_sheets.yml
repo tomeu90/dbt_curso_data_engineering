@@ -3,10 +3,6 @@ version: 2
 models:
   - name: stg_google_sheets_budget
     columns:
-      - name: _row
-        tests:
-          - not_null
-          - unique
       - name: product_id         
         tests:
           - not_null
@@ -23,3 +19,4 @@ models:
       - name: date_load
         tests:
           - not_null
+      - name: time_load

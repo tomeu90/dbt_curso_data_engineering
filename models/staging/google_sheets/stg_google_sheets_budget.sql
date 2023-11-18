@@ -12,11 +12,11 @@ WITH src_budget_products AS (
 
 stg_budget AS (
     SELECT
-          _row
-        , product_id
+          product_id
         , quantity
         , month
-        , _fivetran_synced AS date_load
+        , DATE(_fivetran_synced) AS date_load
+        , TIME(_fivetran_synced) AS time_load
     FROM src_budget_products
     )
 

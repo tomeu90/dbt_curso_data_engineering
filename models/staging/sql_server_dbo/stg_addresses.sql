@@ -12,9 +12,9 @@ WITH src_sql_addresses AS (
 stg_addresses AS (
     SELECT
           address_id
+        , address
         , zipcode
         , country
-        , address
         , state
         , DATE(_fivetran_synced) AS date_load
         , TIME(_fivetran_synced) AS time_load

@@ -14,7 +14,8 @@ stg_order_items AS (
           order_id
         , product_id
         , quantity
-        , _fivetran_synced AS date_load
+        , DATE(_fivetran_synced) AS date_load
+        , TIME(_fivetran_synced) AS time_load
     FROM src_sql_order_items
     )
 
