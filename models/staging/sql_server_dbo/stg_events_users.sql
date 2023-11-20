@@ -16,7 +16,8 @@ stg_events_customers AS (
         , event_type
         , user_id
         , session_id
-        , created_at
+        , DATE(created_at) AS created_at_date
+        , TIME(created_at) AS created_at_time
         , product_id
         , DATE(_fivetran_synced) AS date_load
         , TIME(_fivetran_synced) AS time_load
