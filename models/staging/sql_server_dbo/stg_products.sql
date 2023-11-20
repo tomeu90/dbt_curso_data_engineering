@@ -11,12 +11,12 @@ WITH src_sql_products AS (
 
 stg_products AS (
     SELECT
-          product_id
-        , name
-        , price AS price_usd
-        , inventory
-        , DATE(_fivetran_synced) AS date_load
-        , TIME(_fivetran_synced) AS time_load
+          CAST(product_id AS VARCHAR(300))
+        , CAST(name AS VARCHAR(500))
+        , CAST(price AS FLOAT) AS price_usd
+        , CAST(inventory AS NUMBER(38,0))
+        , CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc
+        , CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
     FROM src_sql_products
     )
 

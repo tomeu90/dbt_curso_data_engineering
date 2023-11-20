@@ -11,11 +11,11 @@ WITH src_sql_order_items AS (
 
 stg_order_items AS (
     SELECT
-          order_id
-        , product_id
-        , quantity
-        , DATE(_fivetran_synced) AS date_load
-        , TIME(_fivetran_synced) AS time_load
+          CAST(order_id AS VARCHAR(300))
+        , CAST(product_id AS VARCHAR(300))
+        , CAST(quantity AS NUMBER(38,0))
+        , CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc
+        , CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
     FROM src_sql_order_items
     )
 

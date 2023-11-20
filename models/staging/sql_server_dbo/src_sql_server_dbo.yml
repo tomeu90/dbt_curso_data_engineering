@@ -76,6 +76,8 @@ sources:
               - unique
               - not_null 
           - name: page_url
+            description: >
+              URL where each event took place.
             data_type: varchar
             tests:
               - not_null
@@ -126,31 +128,85 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            description: >
+              UUID for each order on platform.
             data_type: varchar
+            tests:
+              - not_null
+              - unique                  
           - name: shipping_service
+            description: >
+              Shipping service for each order.
             data_type: varchar
+            tests:
+              - not_null
           - name: shipping_cost
+            description: >
+              Cost in USD for each shipment.
             data_type: float
+            tests:
+              - not_null
+              - positive_values   
           - name: address_id
+            description: >
+              UUID for each address that the order is shipped.              
             data_type: varchar
+            tests:
+              - not_null
           - name: created_at
+            description: >
+              Timestamp when the order was created.
             data_type: timestamp_tz
+            tests:
+              - not_null
           - name: promo_id
+            description: >
+              UUID for each promotion applied at the order.
             data_type: varchar
+            tests:
+              - not_null
           - name: estimated_delivery_at
+            description: >
+              Timestamp for the estimated delivery of the order.
             data_type: timestamp_tz
           - name: order_cost
+            description: >
+              Cost in USD for each order.
             data_type: float
+            tests:
+              - not_null
+              - positive_values
           - name: user_id
+            description: >
+              UUID for each user that ordered an item.
             data_type: varchar
+            tests:
+              - not_null
           - name: order_total
+            description: >
+              Aggregated order and shipment cost in USD for each order.
             data_type: float
+            tests:
+              - not_null
+              - positive_values
           - name: delivered_at
+            description: >
+              Timestamp where the order shipment was delivered.
             data_type: timestamp_tz
           - name: tracking_id
+            description: >
+              UUID for each order that was already shipped.
             data_type: varchar
+            tests:
+              - not_null
           - name: status
+            description: >
+              Status for each order.
             data_type: varchar
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['delivered', 'preparing', 'shipped']   
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
@@ -164,11 +220,24 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: order_id
+            description: >
+              UUID for each order on platform.
             data_type: varchar
+            tests:              
+              - not_null
           - name: product_id
+            description: >
+              UUID for each product ordered on platform.
             data_type: varchar
+            tests:
+              - not_null
           - name: quantity
+            description: >
+              Quantity ordered for each product on each order.
             data_type: number
+            tests:
+              - not_null
+              - positive_values
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
@@ -182,13 +251,33 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: product_id
+            description: >
+              UUID for each product on platform.
             data_type: varchar
+            tests:
+              - not_null
+              - unique
           - name: price
+            description: >
+              Price in USD for each product on platform.
             data_type: float
+            tests:
+              - not_null
+              - positive_values   
           - name: name
+            description: >
+              Name of each product on platform.
             data_type: varchar
+            tests:
+              - unique
+              - not_null
           - name: inventory
+            description: >
+              Inventory left for each product on platform.
             data_type: number
+            tests:
+              - not_null
+              - positive_values
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
@@ -202,11 +291,26 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: promo_id
+            description: >
+              Name for each promotion.
             data_type: varchar
+            tests:
+              - not_null
           - name: discount
+            description: >
+              Discount applied for each promotion.
             data_type: number
+            tests:
+              - not_null
+              - positive_values
           - name: status
+            description: >
+              Status of the promotion.
             data_type: varchar
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['active', 'inactive']                    
           - name: _fivetran_deleted
             data_type: boolean
           - name: _fivetran_synced
@@ -220,8 +324,15 @@ sources:
         loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
+            description: >
+              UUID for each user on platform.
             data_type: varchar
+            tests:
+              - unique
+              - not_null                  
           - name: updated_at
+            description: >
+              Timestamp of when the user was updated. 
             data_type: timestamp_tz
           - name: address_id
             data_type: varchar

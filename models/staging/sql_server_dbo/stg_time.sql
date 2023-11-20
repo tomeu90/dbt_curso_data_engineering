@@ -14,6 +14,14 @@ WITH src_time AS (
     ),
 
 stg_time AS (
+    SELECT    
+    NULL AS time,
+    NULL AS hour,
+    NULL AS minute,
+    NULL AS second
+
+    UNION ALL
+
     SELECT
           TIME(date_second) AS time
         , HOUR(date_second) AS hour

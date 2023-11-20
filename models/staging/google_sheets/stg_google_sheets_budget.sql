@@ -12,11 +12,11 @@ WITH src_budget_products AS (
 
 stg_budget AS (
     SELECT
-          product_id
-        , quantity
-        , month
-        , DATE(_fivetran_synced) AS date_load
-        , TIME(_fivetran_synced) AS time_load
+          CAST(product_id AS VARCHAR(300))
+        , CAST(quantity AS NUMBER(38,0))
+        , CAST(month AS DATE)
+        , CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc
+        , CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
     FROM src_budget_products
     )
 

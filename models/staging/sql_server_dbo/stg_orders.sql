@@ -13,7 +13,7 @@ stg_orders AS (
     SELECT
           order_id
         , shipping_service
-        , shipping_cost
+        , shipping_cost AS shipping_cost_usd
         , address_id
         , created_at
         , DECODE(promo_id,
@@ -26,9 +26,9 @@ stg_orders AS (
                  '93a1e6c0b1c5ccb5d38c3627eda162b1'
                 ) AS promo_id
         , estimated_delivery_at
-        , order_cost
+        , order_cost AS order_cost_usd
         , user_id
-        , order_total
+        , order_total AS order_total_usd
         , delivered_at
         , tracking_id
         , status

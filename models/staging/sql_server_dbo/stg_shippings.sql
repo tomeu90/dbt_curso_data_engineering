@@ -14,12 +14,12 @@ stg_shippings AS (
           tracking_id
         , shipping_service
         , address_id
-        , DATE(estimated_delivery_at) AS estimated_delivery_at_date
-        , TIME(estimated_delivery_at) AS estimated_delivery_at_time
-        , DATE(delivered_at) AS delivered_at_date
-        , TIME(delivered_at) AS delivered_at_time
-        , DATE(_fivetran_synced) AS date_load
-        , TIME(_fivetran_synced) AS time_load
+        , DATE(estimated_delivery_at) AS estimated_delivery_at_date_utc
+        , TIME(estimated_delivery_at) AS estimated_delivery_at_time_utc
+        , DATE(delivered_at) AS delivered_at_date_utc
+        , TIME(delivered_at) AS delivered_at_time_utc
+        , DATE(_fivetran_synced) AS date_load_utc
+        , TIME(_fivetran_synced) AS time_load_utc
     FROM src_sql_orders
     WHERE tracking_id != ''
     )
