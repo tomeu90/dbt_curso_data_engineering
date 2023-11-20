@@ -20,11 +20,11 @@ stg_promos AS (
     UNION ALL
 
     SELECT    
-    'No Promotion' AS PROMO_NAME,
-    0 AS DISCOUNT,
-    'inactive' AS STATUS,
-    '2023-11-11' AS DATE_LOAD,
-    '11:11:35.244000' AS TIME_LOAD
+    'No Promotion' AS promo_name,
+    0 AS discount,
+    'inactive' AS status,
+    '2023-11-11' AS date_load,
+    '11:11:35.244000' AS time_load
     ),
 
 stg_promos_final AS (
