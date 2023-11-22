@@ -16,7 +16,7 @@ models:
       - name: month
         tests:
           - not_null
-      - name: date_load
+      - name: date_load_utc
         tests:
           - not_null
-      - name: time_load
+      - name: time_load_utc

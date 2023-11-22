@@ -23,7 +23,7 @@ stg_time AS (
     UNION ALL
 
     SELECT
-          TIME(date_second) AS time
+          CAST(TIME(date_second) AS TIME(9)) AS time
         , HOUR(date_second) AS hour
         , MINUTE(date_second) AS minute
         , SECOND(date_second) AS second        

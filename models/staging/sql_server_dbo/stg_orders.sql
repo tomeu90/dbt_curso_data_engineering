@@ -9,32 +9,40 @@ WITH src_sql_orders AS (
     FROM {{ source('sql_server_dbo', 'orders') }}
     ),
 
-stg_orders AS (
-    SELECT
+fixed_promo AS (
+        SELECT
           order_id
         , shipping_service
-        , shipping_cost AS shipping_cost_usd
+        , shipping_cost
         , address_id
         , created_at
-        , DECODE(promo_id,
-                 'task-force', '90f31b8933d4fd0aeeac91e95d7a8789',
-                 'instruction set', '075af70146fca96dfdcc121a1038eb6d',
-                 'leverage', '31eb2663e65cb8bc82b377455816ed7c',
-                 'Optional', '170c5ec460854a056b9193ffe5f7dfcd',
-                 'Mandatory', '2a90602f47250840445dd35f7047db1c',
-                 'Digitized', '9f590bee523309da4adad7e951530814',
-                 '93a1e6c0b1c5ccb5d38c3627eda162b1'
-                ) AS promo_id
+        , CASE WHEN promo_id = '' THEN 'No Promotion' ELSE promo_id END AS promo_id
         , estimated_delivery_at
-        , order_cost AS order_cost_usd
+        , order_cost 
         , user_id
-        , order_total AS order_total_usd
+        , order_total
         , delivered_at
         , tracking_id
         , status
-        , DATE(_fivetran_synced) AS date_load
-        , TIME(_fivetran_synced) AS time_load
+        , _fivetran_synced
     FROM src_sql_orders
+),
+
+stg_orders AS (
+    SELECT
+          CAST(order_id AS VARCHAR(1050)) AS order_id
+        , CAST(DATE(created_at) AS DATE) AS created_at_date_utc
+        , CAST(TIME(created_at) AS TIME(9)) AS created_at_time_utc
+        , {{ dbt_utils.generate_surrogate_key(['promo_id']) }} AS promo_id
+        , CAST(order_cost AS FLOAT) AS order_cost_usd
+        , CAST(shipping_cost AS FLOAT) AS shipping_cost_usd
+        , CAST(order_total AS FLOAT) AS order_total_usd
+        , CAST(user_id AS VARCHAR(1050)) AS user_id
+        , CAST(status AS VARCHAR(500)) AS status
+        , CAST(tracking_id AS VARCHAR(1050)) AS tracking_id
+        , CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc
+        , CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
+    FROM fixed_promo
     )
 
 SELECT * FROM stg_orders

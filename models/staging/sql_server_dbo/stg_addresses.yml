@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: stg_addresses
+    description: >
+      Data about addresses in database.
+    columns:
+      - name: address_id
+        description: >
+          UUID for each unique address on platform.
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: zipcode
+        description: >
+          Zipcode for each unique address on platform.
+        data_type: number
+        tests:
+          - not_null
+      - name: country
+        description: >
+          Country for each unique address on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: address
+        description: >
+          Addresses registered on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: state
+        description: >
+          State for each unique address on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+        tests:
+          - not_null
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time
+        tests:
+          - not_null
