@@ -1,8 +1,10 @@
-{{
-  config(
-    materialized='view'
-  )
-}}
+{{ 
+    config(
+        materialized='table', 
+        sort='time',
+        dist='time',
+        pre_hook="alter session set timezone = 'Europe/Madrid'; alter session set week_start = 7;" 
+        ) }}
 
 WITH src_time AS (
     {{ dbt_utils.date_spine(
@@ -14,14 +16,6 @@ WITH src_time AS (
     ),
 
 stg_time AS (
-    SELECT    
-    NULL AS time,
-    NULL AS hour,
-    NULL AS minute,
-    NULL AS second
-
-    UNION ALL
-
     SELECT
           CAST(TIME(date_second) AS TIME(9)) AS time
         , HOUR(date_second) AS hour

@@ -1,8 +1,10 @@
-{{
-  config(
-    materialized='view'
-  )
-}}
+{{ 
+    config(
+        materialized='table', 
+        sort='date_day',
+        dist='date_day',
+        pre_hook="alter session set timezone = 'Europe/Madrid'; alter session set week_start = 7;" 
+        ) }}
 
 WITH src_dates AS (
     {{ dbt_utils.date_spine(
@@ -14,19 +16,6 @@ WITH src_dates AS (
     ),
 
 stg_dates AS (
-    SELECT    
-    NULL AS date,
-    NULL AS day,
-    NULL AS weekday,
-    NULL AS weekday_str,
-    NULL AS month,
-    NULL AS month_str,
-    NULL AS year,
-    NULL AS week,
-    NULL AS quarter
-
-    UNION ALL
-
     SELECT
           date_day AS date
         , DAY(date_day) AS day

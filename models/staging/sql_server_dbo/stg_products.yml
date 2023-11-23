@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_products
+    description: >
+      Each unique product on the platform.
+        columns:
+      - name: product_id
+        description: >
+          UUID for each product on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: price
+        description: >
+          Price in USD for each product on platform.
+        data_type: float
+        tests:
+          - not_null
+          - positive_values
+      - name: valid_until
+        description: >
+          Day price in USD was deprecated on platform.
+        data_type: date
+        tests:
+          - not_null 
+      - name: valid_flag
+        description: >
+          Flag that indicates if the price is active or not.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Y', 'N']     
+      - name: name
+        description: >
+           Name of each product on platform.
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: inventory
+        description: >
+          Inventory left for each product on platform.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values  
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

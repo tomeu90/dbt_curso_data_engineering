@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: stg_promos
+    description: >
+      Each unique promotion on the platform.
+        columns:
+      - name: promo_id
+        description: >
+          UUID for each promotion on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: promo_name
+        description: >
+          Name for each promotion on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: discount
+        description: >
+          Discount applied for each promotion.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: status
+        description: >
+          Status of the promotion.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive']        
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time
