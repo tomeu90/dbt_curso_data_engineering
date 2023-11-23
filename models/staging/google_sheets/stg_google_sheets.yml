@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_google_sheets_budget
+    columns:
+      - name: product_id         
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_products')
+                field: product_id  
+      - name: quantity
+        tests:
+          - not_null
+          - positive_values    
+      - name: month
+        tests:
+          - not_null
+      - name: date_load_utc
+        tests:
+          - not_null
+      - name: time_load_utc

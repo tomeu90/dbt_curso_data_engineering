@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: stg_dates
+    description: >
+      Model with dates and their detailed features.
+    columns:
+      - name: date
+        description: >
+          Date in format YYY-MM-DD.
+        data_type: date
+        tests:
+          - unique          
+      - name: day
+        description: >
+          Extracted day from date.
+        data_type: number
+        tests:          
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 31  
+      - name: weekday
+        description: >
+          Extracted weekday from date.
+        data_type: number
+        tests:
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 7                 
+      - name: weekday_str
+        description: >
+          Extracted weekday from date in string format.
+        data_type: varchar
+        tests:
+          - accepted_values:
+              values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] 
+      - name: month
+        description: >
+          Extracted month from date.
+        data_type: number
+        tests:
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 12  
+      - name: month_str
+        description: >
+          Extracted month from date in string format.
+        data_type: varchar
+        tests:
+          - accepted_values:
+              values: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']         
+      - name: year
+        description: >
+          Extracted year from date.
+        data_type: number
+        tests:          
+          - positive_values
+      - name: week
+        description: >
+          Extracted week from date.
+        data_type: number
+        tests:          
+          - positive_values
+      - name: quarter
+        description: >
+          Extracted quarter from date.
+        data_type: number
+        tests:          
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 4   
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

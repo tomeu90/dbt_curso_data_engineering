@@ -1,0 +1,100 @@
+version: 2
+
+models:   
+  - name: fct_order_products
+    description: >
+      Fact table with all the historic sales.
+    columns:
+      - name: order_id
+        description: >
+          UUID for each order on platform.
+        data_type: varchar
+        tests:              
+          - not_null
+          - relationships:
+                to: ref('dim_orders')
+                field: order_id 
+      - name: product_id
+        description: >
+          UUID for each product ordered on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('dim_products')
+                field: product_id
+      - name: user_id
+        description: >
+          UUID for each user that ordered an item.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('dim_users')
+                field: user_id
+      - name: promo_id
+        description: >
+          UUID for each promotion applied at the order.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('dim_promos')
+                field: promo_id
+      - name: tracking_id
+        description: >
+          UUID for each order that was already shipped.
+        data_type: varchar
+        tests:
+          - not_null
+          - dbt_utils.relationships_where:
+              to: ref('dim_shippings')
+              field: tracking_id
+              from_condition: tracking_id != '' 
+      - name: quantity
+        description: >
+          Quantity ordered for each product on each order.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: price_usd
+        description: >
+          Price in USD for each product on each order.
+        data_type: float
+        tests:
+          - not_null
+          - positive_values
+      - name: order_subcost_usd
+        description: >
+          Cost in USD for each order and product.
+        data_type: float
+        tests:
+          - not_null
+          - positive_values
+          - dbt_utils.expression_is_true:
+              expression: "= quantity * price_usd"       
+      - name: shipping_subcost_usd
+        description: >
+          Cost in USD for each product shipment.
+        data_type: float
+        tests:
+          - not_null
+          - positive_values
+      - name: total_subcost_usd
+        description: >
+          Aggregated order and shipment cost in USD for each order and product.
+        data_type: float
+        tests:
+          - not_null
+          - positive_values
+          - dbt_utils.expression_is_true:
+              expression: "= ROUND(order_subcost_usd + shipping_subcost_usd, 2)"
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

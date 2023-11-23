@@ -1,0 +1,40 @@
+version: 2
+
+models:   
+  - name: stg_order_items
+    description: >
+      History of each product bought on each order on the platform.
+    columns:
+      - name: order_id
+        description: >
+          UUID for each order on platform.
+        data_type: varchar
+        tests:              
+          - not_null
+          - relationships:
+                to: ref('stg_orders')
+                field: order_id 
+      - name: product_id
+        description: >
+          UUID for each product ordered on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_products')
+                field: product_id 
+      - name: quantity
+        description: >
+          Quantity ordered for each product on each order.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

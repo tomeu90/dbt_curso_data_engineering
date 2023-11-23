@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: stg_shippings
+    description: >
+      Each shipment sent on platform.
+    columns:               
+      - name: shipping_service
+        description: >
+          Shipping service for each shipment.
+        data_type: varchar
+        tests:
+          - not_null  
+      - name: address_id
+        description: >
+          UUID for each address that the order is shipped.              
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_addresses')
+                field: address_id
+      - name: estimated_delivery_at_date_utc
+        description: >
+          Date for the estimated delivery of the order.
+        data_type: date
+        tests:
+          - relationships:
+                to: ref('stg_dates')
+                field: date
+      - name: estimated_delivery_at_time_utc
+        description: >
+          Time for the estimated delivery of the order.
+        data_type: time
+        tests:
+          - relationships:
+                to: ref('stg_time')
+                field: time 
+      - name: delivered_at_date_utc
+        description: >
+          Date where the order shipment was delivered.
+        data_type: date
+        tests:
+          - relationships:
+                to: ref('stg_dates')
+                field: date
+      - name: delivered_at_time_utc
+        description: >
+          Time where the order shipment was delivered.
+        data_type: time
+        tests:
+          - relationships:
+                to: ref('stg_time')
+                field: time
+      - name: tracking_id
+        description: >
+          UUID for each order that was already shipped.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique           
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

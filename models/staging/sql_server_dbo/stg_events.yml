@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: >
+      History of each event that took place on the platform.
+    columns:
+      - name: event_id
+        description: >
+          UUID for each unique event on platform.
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+      - name: page_url
+        description: >
+          URL where each event took place.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: event_type
+        description: >
+          Event type on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                ["checkout", "package_shipped", "add_to_cart", "page_view"]
+      - name: user_id
+        description: >
+          UUID for each user that caused an event on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_users')
+                field: user_id  
+      - name: product_id
+        description: >
+          UUID for each product involved in an event on platform.
+        data_type: varchar
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('stg_products')
+              field: product_id
+              from_condition: product_id != '' 
+      - name: session_id
+        description: >
+          UUID for each session on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: created_at_date_utc
+        description: >
+          Date of when the event on platform was created.
+        data_type: date
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_dates')
+                field: date
+      - name: created_at_time_utc
+        description: >
+          Time of when the event on platform was created.
+        data_type: time
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_time')
+                field: time     
+      - name: order_id
+        description: >
+          UUID for each order involved in an event on platform.
+        data_type: varchar
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('stg_orders')
+              field: order_id
+              from_condition: order_id != '' 
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time
