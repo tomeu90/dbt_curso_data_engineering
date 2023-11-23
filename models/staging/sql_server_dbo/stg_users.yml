@@ -20,6 +20,8 @@ models:
           - relationships:
                 to: ref('stg_dates')
                 field: date
+          - dbt_utils.expression_is_true:
+              expression: '>= created_at_date_utc'
       - name: updated_at_time_utc
         description: >
           Time of when the user was updated. 

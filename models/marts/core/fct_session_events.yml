@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_session_events
+    description: >
+      History of each event that took place on each session on the platform.
+    columns:
+      - name: session_id
+        description: >
+          UUID for each session on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: event_id
+        description: >
+          UUID for each unique event on platform.
+        data_type: varchar
+        tests:
+          - unique
+          - not_null
+          - relationships:
+                to: ref('dim_events')
+                field: event_id 
+      - name: user_id
+        description: >
+          UUID for each user that caused an event on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                to: ref('dim_users')
+                field: user_id
+      - name: order_id
+        description: >
+          UUID for each order involved in an event on platform.
+        data_type: varchar
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('dim_orders')
+              field: order_id
+              from_condition: order_id != ''   
+      - name: product_id
+        description: >
+          UUID for each product involved in an event on platform.
+        data_type: varchar
+        tests:
+          - dbt_utils.relationships_where:
+              to: ref('dim_products')
+              field: product_id
+              from_condition: product_id != ''
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

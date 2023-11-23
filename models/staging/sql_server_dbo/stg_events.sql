@@ -9,7 +9,7 @@ WITH src_sql_events AS (
     FROM {{ source('sql_server_dbo', 'events') }}
     ),
 
-stg_events_customers AS (
+stg_events AS (
     SELECT
           CAST(event_id AS VARCHAR(1050)) AS event_id
         , CAST(page_url AS VARCHAR(1050)) AS page_url
@@ -25,4 +25,4 @@ stg_events_customers AS (
     FROM src_sql_events
     )
 
-SELECT * FROM stg_events_customers
+SELECT * FROM stg_events
