@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: monthly_results
+    description: >
+      Mart table containing monthly results for products.
+    columns:
+      - name: name
+        description: >
+          Name of the product.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: month
+        description: >
+          Month (numeric) for the results.
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 12
+      - name: month_str
+        description: >
+          Month (string) for the results.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      - name: year
+        description: >
+          Year for the results.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: inventory
+        description: >
+          Quantity of the product available in inventory.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: monthly_quantity
+        description: >
+          Quantity sold for the product in the specific month.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: budget_quantity
+        description: >
+          Budgeted quantity for the product in the specific month.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values

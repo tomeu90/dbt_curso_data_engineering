@@ -1,25 +1,18 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
+{{ 
+    config(
+    materialized='incremental',
+    unique_key = 'surrogate_se_key'
+    ) 
+    }}
 
-WITH stg_events AS (
-    SELECT * 
-    FROM {{ ref('stg_events') }}
-    ),
+WITH int_session_events AS (
+    SELECT *
+    FROM {{ ref('int_session_events') }}    
+{% if is_incremental() %}
 
-fct_session_events AS (
-    SELECT
-          session_id
-        , event_id
-        , user_id
-        , order_id
-        , product_id
-        , date_load_utc
-        , time_load_utc
-    FROM stg_events
-    ORDER BY session_id
-    )
+	  where TO_TIMESTAMP(DATE_LOAD_UTC || ' ' || TIME_LOAD_UTC, 'YYYY-MM-DD HH24:MI:SS') > (select max(TO_TIMESTAMP(DATE_LOAD_UTC || ' ' || TIME_LOAD_UTC, 'YYYY-MM-DD HH24:MI:SS')) from {{ this }})
 
-SELECT * FROM fct_session_events
+{% endif %}
+)
+
+SELECT * FROM int_session_events

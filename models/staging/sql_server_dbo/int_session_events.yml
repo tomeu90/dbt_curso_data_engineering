@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fct_session_events
+  - name: int_session_events
     description: >
       History of each event that took place on each session on the platform.
     columns:

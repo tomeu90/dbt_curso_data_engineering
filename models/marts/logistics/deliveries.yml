@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: deliveries
+    description: >
+      Mart table containing delivery information for orders.
+    columns:
+      - name: order_id
+        description: >
+          Unique ID for each order.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: shipping_cost
+        description: >
+          Cost of shipping for the order.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: shipping_service
+        description: >
+          Shipping service used for the delivery.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: created_at_date_utc
+        description: >
+          Date of when the delivery record was created.
+        data_type: date
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "<= estimated_delivery_at_date_utc" 
+          - dbt_utils.expression_is_true:
+              expression: "<= delivered_at_date_utc" 
+      - name: estimated_delivery_at_date_utc
+        description: >
+          Estimated delivery date for the order.
+        data_type: date
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= created_at_date_utc" 
+      - name: delivered_at_date_utc
+        description: >
+          Actual delivery date for the order.
+        data_type: date
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= created_at_date_utc"
+      - name: estimation_diff_days
+        description: >
+          Difference in days between estimated and actual delivery.
+        data_type: number
+      - name: shipment_duration_days
+        description: >
+          Duration of the shipment in days.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values

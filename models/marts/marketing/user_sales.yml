@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: user_sales
+    description: >
+      Mart table containing sales information for users.
+    columns:
+      - name: user_id
+        description: >
+          Unique ID for each user.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: first_name
+        description: >
+          First name of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: last_name
+        description: >
+          Last name of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: address
+        description: >
+          Address of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: zipcode
+        description: >
+          Zipcode of the user's location.
+        data_type: number
+        tests:
+          - not_null
+      - name: country
+        description: >
+          Country of the user's location.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: state
+        description: >
+          State of the user's location.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: phone
+        description: >
+          Phone number of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: email
+        description: >
+          Email of the user.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: order_count
+        description: >
+          Number of orders placed by the user.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: total_expend
+        description: >
+          Total expenditure by the user.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: total_shipping_cost
+        description: >
+          Total shipping cost for the user's orders.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: total_discount
+        description: >
+          Total discount applied to the user's orders.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: total_products
+        description: >
+          Total number of products purchased by the user.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: diff_product
+        description: >
+          Count for distinct products ordered.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values

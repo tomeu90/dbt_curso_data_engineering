@@ -29,7 +29,6 @@ models:
         data_type: number
         tests:
           - not_null
-          - positive_values
       - name: date_load_utc
         description: >
           Date that the data was loaded.

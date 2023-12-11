@@ -1,35 +1,23 @@
 version: 2
 
 models:
-  - name: stg_products
+  - name: dim_products
     description: >
-      Each unique product on the platform.
+      Dimension table for each unique product on the platform.
         columns:
-      - name: scd_product_id
-        description: >
-          Slow Changing Dimension UUID for products on platform.
-        data_type: varchar
-        tests:
-          - not_null 
-          - unique
       - name: product_id
         description: >
           UUID for each product on platform.
         data_type: varchar
         tests:
           - not_null
-      - name: price_usd
-        description: >
-          Price in USD for each product on platform.
-        data_type: float
-        tests:
-          - not_null
-          - positive_values 
+          - unique
       - name: name
         description: >
            Name of each product on platform.
         data_type: varchar
         tests:
+          - unique
           - not_null
       - name: inventory
         description: >
@@ -46,13 +34,3 @@ models:
         description: >
           Time that the data was loaded.
         data_type: time
-      - name: valid_from_utc
-        description: >
-          Timestamp since data is valid.
-        data_type: timestamp
-        tests:
-          - not_null
-      - name: valid_to_utc
-        description: >
-          Timestamp until data is valid.
-        data_type: timestamp

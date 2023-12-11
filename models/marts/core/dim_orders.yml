@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: dim_orders
+    description: >
+      Dimension table for each unique order on the platform.
+    columns:
+      - name: order_id
+        description: >
+          UUID for each order on platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: created_at_date_utc
+        description: >
+          Date when the order was created.
+        data_type: date
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_dates')
+                field: date 
+      - name: created_at_time_utc
+        description: >
+          Time when the order was created.
+        data_type: time
+        tests:
+          - not_null
+          - relationships:
+                to: ref('stg_time')
+                field: time
+      - name: status
+        description: >
+          Status for each order.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['delivered', 'preparing', 'shipped']   
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time
