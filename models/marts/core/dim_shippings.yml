@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: dim_shippings
+    description: >
+      Dimension table for each shipment sent on platform.
+    columns: 
+      - name: tracking_id
+        description: >
+          UUID for each order that was already shipped.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique                 
+      - name: shipping_service
+        description: >
+          Shipping service for each shipment.
+        data_type: varchar
+        tests:
+          - not_null  
+      - name: delivery_address
+        description: >
+          Addresses registered on platform.
+        data_type: varchar
+        tests:
+          - not_null          
+      - name: delivery_zipcode
+        description: >
+          Zipcode for each unique address on platform.
+        data_type: number
+        tests:
+          - not_null
+      - name: delivery_country
+        description: >
+          Country for each unique address on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: delivery_state
+        description: >
+          State for each unique address on platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: estimated_delivery_at_date_utc
+        description: >
+          Date for the estimated delivery of the order.
+        data_type: date
+        tests:
+          - relationships:
+                to: ref('stg_dates')
+                field: date
+      - name: estimated_delivery_at_time_utc
+        description: >
+          Time for the estimated delivery of the order.
+        data_type: time
+        tests:
+          - relationships:
+                to: ref('stg_time')
+                field: time 
+      - name: delivered_at_date_utc
+        description: >
+          Date where the order shipment was delivered.
+        data_type: date
+        tests:
+          - relationships:
+                to: ref('stg_dates')
+                field: date
+      - name: delivered_at_time_utc
+        description: >
+          Time where the order shipment was delivered.
+        data_type: time
+        tests:
+          - relationships:
+                to: ref('stg_time')
+                field: time        
+      - name: date_load_utc
+        description: >
+          Date that the data was loaded.
+        data_type: date
+      - name: time_load_utc
+        description: >
+          Time that the data was loaded.
+        data_type: time

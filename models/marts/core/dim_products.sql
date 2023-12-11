@@ -7,14 +7,13 @@
 WITH stg_products AS (
     SELECT * 
     FROM {{ ref('stg_products') }}
+    WHERE valid_to_utc IS NULL    
     ),
 
 dim_products AS (
     SELECT
           product_id
         , name
-        , valid_until
-        , valid_flag
         , inventory
         , date_load_utc
         , time_load_utc

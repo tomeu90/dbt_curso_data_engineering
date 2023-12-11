@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_google_sheets_budget
+  - name: dim_budget
     columns:
       - name: product_id         
         tests:
@@ -9,7 +9,7 @@ models:
           - relationships:
                 to: ref('stg_products')
                 field: product_id  
-      - name: quantity
+      - name: budget_quantity
         tests:
           - not_null
           - positive_values    

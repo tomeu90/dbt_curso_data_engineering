@@ -7,6 +7,7 @@
 WITH stg_users AS (
     SELECT * 
     FROM {{ ref('stg_users') }}
+    WHERE valid_to_utc IS NULL
     ),
 
 stg_addresses AS (

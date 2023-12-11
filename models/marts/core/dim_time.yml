@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dim_time
+    description: >
+      Dimension table with time and their detailed features.
+    columns:
+      - name: time
+        description: >
+          Time in format hh:mm:ss.
+        data_type: time
+        tests:
+          - unique          
+      - name: hour
+        description: >
+          Extracted hour from time.
+        data_type: number
+        tests:          
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 23
+      - name: minute
+        description: >
+          Extracted minute from time.
+        data_type: number
+        tests:
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 59                
+      - name: second
+        description: >
+          Extracted second from time.
+        data_type: number
+        tests:
+          - positive_values
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 59  

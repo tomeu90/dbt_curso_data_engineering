@@ -1,0 +1,113 @@
+version: 2
+
+models:
+  - name: web_product
+    description: >
+      Mart table with session info for each user in the platform.
+    columns:
+      - name: session_id
+        description: >
+          ID for each session on the platform.
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+      - name: user_id
+        description: >
+          ID for each user on the platform.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: full_name
+        description: >
+          Full name of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: address
+        description: >
+          Address of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: zipcode
+        description: >
+          Zipcode of the users's location.
+        data_type: number
+        tests:
+          - not_null
+      - name: country
+        description: >
+          Country of the user's location.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: state
+        description: >
+          State of the user's location.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: phone
+        description: >
+          Phone number of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: email
+        description: >
+          Email of the user.
+        data_type: varchar
+        tests:
+          - not_null
+      - name: session_start
+        description: >
+          Start time of the user session.
+        data_type: time
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "<= session_end"
+      - name: session_end
+        description: >
+          End time of the user session.
+        data_type: time
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= session_start"
+      - name: session_time_minutes
+        description: >
+          Duration of the user session in minutes.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: page_visits
+        description: >
+          Number of page visits during the user session.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: add_to_cart
+        description: >
+          Indicator for adding products to the cart.
+        data_type: varchar
+        tests:
+          - not_null
+          - positive_values
+      - name: checkout
+        description: >
+          Indicator for user checkout.
+        data_type: varchar
+        tests:
+          - not_null
+          - positive_values
+      - name: package_shipped
+        description: >
+          Indicator for package shipment.
+        data_type: varchar
+        tests:
+          - not_null
+          - positive_values

@@ -1,0 +1,108 @@
+version: 2
+
+models:
+  - name: agg_sales
+    description: >
+      Mart table containing aggregated sales by day.
+    columns:
+      - name: created_at_date_utc
+        description: >
+          Date of when the sales were created.
+        data_type: date
+        tests:
+          - not_null
+          - unique
+      - name: order_count
+        description: >
+          Number of orders created on the specific day.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: quantity
+        description: >
+          Total quantity of products sold on the specific day.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: order_cost_usd
+        description: >
+          Total order cost in USD on the specific day.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: shipping_cost_usd
+        description: >
+          Total shipping cost in USD on the specific day.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: total_cost_usd
+        description: >
+          Total cost in USD (order cost + shipping cost) on the specific day.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: day
+        description: >
+          Day of the month for the sales.
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 31
+      - name: weekday_str
+        description: >
+          Weekday string for the sales.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] 
+      - name: month
+        description: >
+          Month for the sales.
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 12
+      - name: month_str
+        description: >
+          Month string for the sales.
+        data_type: varchar
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      - name: year
+        description: >
+          Year for the sales.
+        data_type: number
+        tests:
+          - not_null
+          - positive_values
+      - name: week
+        description: >
+          Week of the year for the sales.
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 53
+      - name: quarter
+        description: >
+          Quarter of the year for the sales.
+        data_type: number
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 4

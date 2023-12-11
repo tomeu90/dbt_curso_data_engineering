@@ -16,7 +16,7 @@ stg_order_items AS (
         , CAST(quantity AS NUMBER(38,0)) AS quantity
         , CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc
         , CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
-    FROM src_sql_order_items
+    FROM src_sql_order_items    
     )
 
 SELECT * FROM stg_order_items

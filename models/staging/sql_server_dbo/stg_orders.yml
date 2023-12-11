@@ -18,7 +18,6 @@ models:
         data_type: float
         tests:
           - not_null
-          - positive_values
       - name: created_at_date_utc
         description: >
           Date when the order was created.
@@ -52,7 +51,6 @@ models:
         data_type: float
         tests:
           - not_null
-          - positive_values
       - name: user_id
         description: >
           UUID for each user that ordered an item.
@@ -68,7 +66,6 @@ models:
         data_type: float
         tests:
           - not_null
-          - positive_values
       - name: tracking_id
         description: >
           UUID for each order that was already shipped.

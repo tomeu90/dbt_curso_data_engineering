@@ -6,11 +6,12 @@
 
 WITH src_sql_users AS (
     SELECT *
-    FROM {{ source('sql_server_dbo', 'users') }}
+    FROM {{ ref('users_snapshot') }}
 ),
 
 stg_users AS (
     SELECT
+        CAST(dbt_scd_id AS VARCHAR(1050)) AS scd_user_id,
         CAST(src_sql_users.user_id AS VARCHAR(1050)) AS user_id,
         CAST(first_name AS VARCHAR(500)) AS first_name,
         CAST(last_name AS VARCHAR(500)) AS last_name,
@@ -22,7 +23,9 @@ stg_users AS (
         CAST(DATE(updated_at) AS DATE) AS updated_at_date_utc,
         CAST(TIME(updated_at) AS TIME(9)) AS updated_at_time_utc,
         CAST(DATE(_fivetran_synced) AS DATE) AS date_load_utc,
-        CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc
+        CAST(TIME(_fivetran_synced) AS TIME(9)) AS time_load_utc,
+        CAST(dbt_valid_from AS TIMESTAMP) AS valid_from_utc,
+        CAST(dbt_valid_to AS TIMESTAMP) AS valid_to_utc
     FROM src_sql_users
 )
 

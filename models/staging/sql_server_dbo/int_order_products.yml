@@ -1,9 +1,9 @@
 version: 2
 
 models:   
-  - name: fct_order_products
+  - name: int_order_products
     description: >
-      Fact table with all the historic sales.
+      Intermediate table with all the historic sales.
     columns:
       - name: surrogate_op_key
         description: >

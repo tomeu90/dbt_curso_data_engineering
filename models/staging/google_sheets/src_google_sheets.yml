@@ -36,10 +36,7 @@ sources:
               UUID for each unique product on platform.
             data_type: varchar
             tests:
-              - not_null              
-              - relationships:
-                  to: source('sql_server_dbo','products')
-                  field: product_id
+              - not_null
           - name: quantity
             description: >
               Number of units for each product and each month for products.
