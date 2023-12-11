@@ -7,12 +7,25 @@
 
 WITH int_order_products AS (
     SELECT *
-    FROM {{ ref('int_order_products') }}    
-{% if is_incremental() %}
+    FROM {{ ref('int_order_products') }}
+    {% if is_incremental() %}
 
-	  where TO_TIMESTAMP(DATE_LOAD_UTC || ' ' || TIME_LOAD_UTC, 'YYYY-MM-DD HH24:MI:SS') > (select max(TO_TIMESTAMP(DATE_LOAD_UTC || ' ' || TIME_LOAD_UTC, 'YYYY-MM-DD HH24:MI:SS')) from {{ this }})
+        WHERE
+            TO_TIMESTAMP(
+                date_load_utc || ' ' || time_load_utc, 'YYYY-MM-DD HH24:MI:SS'
+            )
+            > (
+                SELECT
+                    MAX(
+                        TO_TIMESTAMP(
+                            date_load_utc || ' ' || time_load_utc,
+                            'YYYY-MM-DD HH24:MI:SS'
+                        )
+                    )
+                FROM {{ this }}
+            )
 
-{% endif %}
+    {% endif %}
 )
 
 SELECT * FROM int_order_products
