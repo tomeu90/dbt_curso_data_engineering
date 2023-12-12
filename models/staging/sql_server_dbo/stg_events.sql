@@ -1,12 +1,27 @@
-{{
-  config(
-    materialized='view'
-  )
-}}
+{{ 
+    config(
+    materialized='incremental',
+    unique_key = 'surrogate_se_key'
+    ) 
+    }}
 
 WITH src_sql_events AS (
     SELECT * 
     FROM {{ source('sql_server_dbo', 'events') }}
+    {% if is_incremental() %}
+
+        WHERE _fivetran_synced > (
+            SELECT
+                MAX(
+                    TO_TIMESTAMP(
+                        date_load_utc || ' ' || time_load_utc,
+                        'YYYY-MM-DD HH24:MI:SS'
+                    )
+                )
+            FROM {{ this }}
+        )
+
+    {% endif %}
     ),
 
 stg_events AS (
@@ -25,4 +40,8 @@ stg_events AS (
     FROM src_sql_events
     )
 
-SELECT * FROM stg_events
+SELECT     CAST(
+        {{ dbt_utils.generate_surrogate_key(['session_id', 'event_id']) }} AS VARCHAR(1050)
+    )
+        AS surrogate_se_key,
+        * FROM stg_events
